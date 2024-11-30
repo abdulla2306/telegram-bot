@@ -1,4 +1,3 @@
 git add .
-git commit -m "Updated Procfile and requirements.txt"
+git commit -m "Fixed start command and added Procfile"
 git push origin main
-
