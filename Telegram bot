@@ -11,7 +11,7 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 
 def main():
     # Tokenni botFather'dan olgan token bilan almashtiring
-    token = 'YOUR_BOT_TOKEN'
+    token = '8102841815:AAEWQ-fDSvn4O1ilGhIfqxzd8QSztzjCQyc'
 
     # Application ob'ektini yaratamiz
     application = Application.builder().token(token).build()
