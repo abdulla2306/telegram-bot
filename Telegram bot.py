@@ -3,10 +3,10 @@ from telegram import Update
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 
 # OpenAI API kalitini o'rnating
-openai.api_key = 'YOUR_OPENAI_API_KEY'
+openai.api_key = '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'
 
 # Telegram API tokenini o'rnating
-TELEGRAM_API_TOKEN = 'YOUR_TELEGRAM_BOT_API_TOKEN'
+TELEGRAM_API_TOKEN = '8102841815:AAEWQ-fDSvn4O1ilGhIfqxzd8QSztzjCQyc'
 
 # OpenAI modelidan foydalanish
 def generate_openai_response(prompt: str) -> str:
