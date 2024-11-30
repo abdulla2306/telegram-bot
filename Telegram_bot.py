@@ -1,18 +1,21 @@
 import openai
+import os
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, CallbackContext
+from dotenv import load_dotenv
+import asyncio
 
+# .env faylini yuklash
+load_dotenv()
 
-# OpenAI API kalitini o'rnating
-openai.api_key = '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'
+# API kalitlarini atrof-muhitdan olish
+openai.api_key = os.getenv("OPENAI_API_KEY")
+TELEGRAM_API_TOKEN = os.getenv("TELEGRAM_API_TOKEN")
 
-# Telegram API tokenini o'rnating
-TELEGRAM_API_TOKEN = '8102841815:AAEWQ-fDSvn4O1ilGhIfqxzd8QSztzjCQyc'
-
-# OpenAI modelidan foydalanish
-def generate_openai_response(prompt: str) -> str:
+# OpenAI modelidan foydalanish (async)
+async def generate_openai_response(prompt: str) -> str:
     try:
-        response = openai.Completion.create(
+        response = await openai.Completion.create(
             engine="text-davinci-003",  # yoki boshqa modelni tanlang
             prompt=prompt,
             max_tokens=150
@@ -27,7 +30,7 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
     print(f"Foydalanuvchidan xabar: {user_message}")
     
     # OpenAI'dan javob olish
-    openai_response = generate_openai_response(user_message)
+    openai_response = await generate_openai_response(user_message)
     
     # OpenAI javobini foydalanuvchuga yuborish
     await update.message.reply_text(openai_response)
@@ -45,7 +48,8 @@ def main():
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
     # Botni ishga tushirish
-    application.run_polling()
+    asyncio.run(application.run_polling())
 
 if __name__ == '__main__':
     main()
+
