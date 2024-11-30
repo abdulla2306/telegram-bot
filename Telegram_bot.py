@@ -1,6 +1,6 @@
 import openai
 from telegram import Update
-from telegram.ext import Updater, CommandHandler, MessageHandler, filters, CallbackContext
+from telegram.ext import Application, CommandHandler, CallbackContext
 
 
 # OpenAI API kalitini o'rnating
