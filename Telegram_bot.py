@@ -1,6 +1,6 @@
 import openai
 from telegram import Update
-from telegram.ext import Application, CommandHandler, CallbackContext
+from telegram.ext import Application, CommandHandler, MessageHandler, filters, CallbackContext
 
 
 # OpenAI API kalitini o'rnating
@@ -22,7 +22,7 @@ def generate_openai_response(prompt: str) -> str:
         return f"Xatolik yuz berdi: {str(e)}"
 
 # Foydalanuvchidan kelgan xabarni qayta ishlash
-def handle_message(update: Update, context: CallbackContext) -> None:
+async def handle_message(update: Update, context: CallbackContext) -> None:
     user_message = update.message.text  # Foydalanuvchidan kelgan xabar
     print(f"Foydalanuvchidan xabar: {user_message}")
     
@@ -30,26 +30,22 @@ def handle_message(update: Update, context: CallbackContext) -> None:
     openai_response = generate_openai_response(user_message)
     
     # OpenAI javobini foydalanuvchuga yuborish
-    update.message.reply_text(openai_response)
+    await update.message.reply_text(openai_response)
 
 # /start komandasi
-def start(update: Update, context: CallbackContext) -> None:
-    update.message.reply_text("Salom! Men OpenAI yordamida ishlovchi botman. Savollarni berishingiz mumkin.")
+async def start(update: Update, context: CallbackContext) -> None:
+    await update.message.reply_text("Salom! Men OpenAI yordamida ishlovchi botman. Savollarni berishingiz mumkin.")
 
 def main():
-    # Updaterni yaratish
-    updater = Updater(TELEGRAM_API_TOKEN)
-
-    # Dispatcher obyekti
-    dispatcher = updater.dispatcher
+    # Applicationni yaratish
+    application = Application.builder().token(TELEGRAM_API_TOKEN).build()
 
     # Komandalar va xabarlarni qayta ishlash
-    dispatcher.add_handler(CommandHandler("start", start))
-    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, handle_message))
+    application.add_handler(CommandHandler("start", start))
+    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
     # Botni ishga tushirish
-    updater.start_polling()
-    updater.idle()
+    application.run_polling()
 
 if __name__ == '__main__':
     main()
