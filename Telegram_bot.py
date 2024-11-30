@@ -1,8 +1,8 @@
+from dotenv import load_dotenv
 import openai
 import os
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, CallbackContext
-from dotenv import load_dotenv
 import asyncio
 
 # .env faylini yuklash
