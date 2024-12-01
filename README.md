@@ -1,4 +1,3 @@
-git add requirements.txt
-git commit -m "Add openai to requirements.txt"
+git add .
+git commit -m "Configure app with Procfile and Gunicorn"
 git push
-
