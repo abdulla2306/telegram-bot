@@ -1,3 +1,4 @@
-git add Telegram_bot.py
-git commit -m "Updated code for python-telegram-bot v20"
-git push origin main
+git add requirements.txt
+git commit -m "Add openai to requirements.txt"
+git push
+
