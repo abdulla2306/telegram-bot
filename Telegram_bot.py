@@ -58,12 +58,12 @@ def set_webhook():
 def webhook():
     json_str = request.get_data().decode('UTF-8')  # Webhookdan kelgan JSON ma'lumotlari
     update = Update.de_json(json.loads(json_str), None)  # JSONni Python obyektiga aylantirish
-    application.process_update(update)
+    application.process_update(update)  # Application ni ishlatish
     return 'OK', 200
 
 def main():
+    global application  # Global qilish
     # Applicationni yaratish
-    global application
     application = Application.builder().token(TELEGRAM_API_TOKEN).build()
 
     # Komandalar va xabarlarni qayta ishlash
