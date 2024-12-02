@@ -1,6 +1,7 @@
 import os
 import openai
 import requests
+import json  # json kutubxonasini import qilish
 from flask import Flask, request
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, CallbackContext
@@ -52,14 +53,11 @@ def set_webhook():
     response = requests.get(set_webhook_url)
     print(f"Webhook sozlash javobi: {response.text}")  # So'rovning natijasi
 
-# Webhookni o'rnatish
-set_webhook()
-
 # Webhook URLni sozlash
 @app.route(f'/{TELEGRAM_API_TOKEN}', methods=['POST'])
 def webhook():
-    json_str = request.get_data().decode('UTF-8')
-    update = Update.de_json(json_str, None)
+    json_str = request.get_data().decode('UTF-8')  # Webhookdan kelgan JSON ma'lumotlari
+    update = Update.de_json(json.loads(json_str), None)  # JSONni Python obyektiga aylantirish
     application.process_update(update)
     return 'OK', 200
 
@@ -73,14 +71,16 @@ def main():
 
     # Webhookni sozlash
     PORT = int(os.getenv('PORT', '5000'))  # Render platformasida portni 5000 deb belgilash mumkin
-    application.run_webhook(
-        listen="0.0.0.0",  # Butun tizim bo'ylab tinglash
-        port=PORT,  # Portni o'zgaruvchidan olish
-        url_path=TELEGRAM_API_TOKEN,  # Tokenni url_path sifatida ishlatish
-        webhook_url=f'https://telegram-bot-ef1y.onrender.com/{TELEGRAM_API_TOKEN}'  # Render URL
-    )
+
+    # Flask serverini ishga tushirish
+    app.run(host="0.0.0.0", port=PORT)
+
+    # Webhookni o'rnatish
+    set_webhook()
 
 if __name__ == '__main__':
-    # Flask serverini ishga tushurish
+    # Flask serverini ishga tushurish va Telegram botni sozlash
+    main()
+
     app.run(host="0.0.0.0", port=int(os.getenv('PORT', 5000)))
     main()
