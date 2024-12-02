@@ -1,13 +1,15 @@
-from flask import Flask, request, jsonify
+import os
 import openai
+from flask import Flask, request
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, CallbackContext
-import os
+import logging
 
 # OpenAI API kaliti va Telegram API tokenini to'g'ridan-to'g'ri kiritish
 openai.api_key = os.getenv('OPENAI_API_KEY')
 TELEGRAM_API_TOKEN = os.getenv('TELEGRAM_API_TOKEN')
 
+# Flask ilovasi
 app = Flask(__name__)
 
 # Flask endpoint'lari
@@ -27,7 +29,7 @@ def generate_openai_response(prompt: str) -> str:
     except Exception as e:
         return f"Xatolik yuz berdi: {str(e)}"
 
-# Foydalanuvchidan kelgan xabarni qayta ishlash
+# Telegram botda foydalanuvchidan kelgan xabarni qayta ishlash
 async def handle_message(update: Update, context: CallbackContext) -> None:
     user_message = update.message.text  # Foydalanuvchidan kelgan xabar
     print(f"Foydalanuvchidan xabar: {user_message}")
@@ -41,6 +43,14 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
 # /start komandasi
 async def start(update: Update, context: CallbackContext) -> None:
     await update.message.reply_text("Salom! Men OpenAI yordamida ishlovchi botman. Savollarni berishingiz mumkin.")
+
+# Webhookni sozlash
+@app.route(f'/{TELEGRAM_API_TOKEN}', methods=['POST'])
+def webhook():
+    json_str = request.get_data().decode('UTF-8')
+    update = Update.de_json(json_str, None)
+    application.process_update(update)
+    return 'OK', 200
 
 def main():
     # Applicationni yaratish
@@ -63,4 +73,3 @@ if __name__ == '__main__':
     # Flask serverini ishga tushurish
     app.run(host="0.0.0.0", port=int(os.getenv('PORT', 5000)))
     main()
-
