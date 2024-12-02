@@ -14,6 +14,9 @@ TELEGRAM_API_TOKEN = os.getenv('TELEGRAM_API_TOKEN')
 # Flask ilovasi
 app = Flask(__name__)
 
+# Telegram botni sozlash
+application = None  # Global variable to hold the application object
+
 # Flask endpoint'lari
 @app.route('/')
 def home():
@@ -48,23 +51,24 @@ async def start(update: Update, context: CallbackContext) -> None:
 
 # Webhookni sozlash
 def set_webhook():
-    WEBHOOK_URL = f'https://telegram-bot-ef1y.onrender.com/{8102841815:AAEWQ-fDSvn4O1ilGhIfqxzd8QSztzjCQyc}'
-    set_webhook_url = f'https://api.telegram.org/bot{8102841815:AAEWQ-fDSvn4O1ilGhIfqxzd8QSztzjCQyc}/setWebhook?url={WEBHOOK_URL}'
+    WEBHOOK_URL = f'https://telegram-bot-ef1y.onrender.com/{TELEGRAM_API_TOKEN}'
+    set_webhook_url = f'https://api.telegram.org/bot{TELEGRAM_API_TOKEN}/setWebhook?url={WEBHOOK_URL}'
     response = requests.get(set_webhook_url)
     print(f"Webhook sozlash javobi: {response.text}")  # So'rovning natijasi
 
 # Webhook URLni sozlash
-@app.route(f'/{8102841815:AAEWQ-fDSvn4O1ilGhIfqxzd8QSztzjCQyc}', methods=['POST'])
+@app.route(f'/{TELEGRAM_API_TOKEN}', methods=['POST'])
 def webhook():
     json_str = request.get_data().decode('UTF-8')  # Webhookdan kelgan JSON ma'lumotlari
     update = Update.de_json(json.loads(json_str), None)  # JSONni Python obyektiga aylantirish
-    application.process_update(update)  # Application ni ishlatish
+    if application:
+        application.process_update(update)  # Application ni ishlatish
     return 'OK', 200
 
 def main():
     global application  # Global qilish
     # Applicationni yaratish
-    application = Application.builder().token(8102841815:AAEWQ-fDSvn4O1ilGhIfqxzd8QSztzjCQyc).build()
+    application = Application.builder().token("8102841815:AAEWQ-fDSvn4O1ilGhIfqxzd8QSztzjCQyc").build()
 
     # Komandalar va xabarlarni qayta ishlash
     application.add_handler(CommandHandler("start", start))
@@ -79,4 +83,7 @@ if __name__ == '__main__':
 
     # Flask serverini ishga tushirish
     app.run(host="0.0.0.0", port=int(os.getenv('PORT', 5000)))
+
+
+  
 
