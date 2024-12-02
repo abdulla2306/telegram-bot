@@ -82,7 +82,7 @@ if __name__ == '__main__':
     main()
 
     # Flask serverini ishga tushirish
-    app.run(host="0.0.0.0", port=int(os.getenv('PORT', 5000)))
+    app.run(host="0.0.0.0", port=int(os.getenv('PORT', 10000)))
 
 
   
