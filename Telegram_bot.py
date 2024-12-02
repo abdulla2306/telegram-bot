@@ -1,7 +1,7 @@
 import os
 import openai
 import requests
-import json  # json kutubxonasini import qilish
+import json
 from flask import Flask, request
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, CallbackContext
@@ -63,17 +63,12 @@ def webhook():
 
 def main():
     # Applicationni yaratish
+    global application
     application = Application.builder().token(TELEGRAM_API_TOKEN).build()
 
     # Komandalar va xabarlarni qayta ishlash
     application.add_handler(CommandHandler("start", start))
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
-
-    # Webhookni sozlash
-    PORT = int(os.getenv('PORT', '5000'))  # Render platformasida portni 5000 deb belgilash mumkin
-
-    # Flask serverini ishga tushirish
-    app.run(host="0.0.0.0", port=PORT)
 
     # Webhookni o'rnatish
     set_webhook()
@@ -82,5 +77,6 @@ if __name__ == '__main__':
     # Flask serverini ishga tushurish va Telegram botni sozlash
     main()
 
+    # Flask serverini ishga tushirish
     app.run(host="0.0.0.0", port=int(os.getenv('PORT', 5000)))
-    main()
+
