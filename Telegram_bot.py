@@ -66,7 +66,7 @@ def main():
         listen="0.0.0.0",  # Butun tizim bo'ylab tinglash
         port=PORT,  # Portni o'zgaruvchidan olish
         url_path=TELEGRAM_API_TOKEN,  # Tokenni url_path sifatida ishlatish
-        webhook_url=f'https://your-app-name.onrender.com/{TELEGRAM_API_TOKEN}'  # Render URL
+        webhook_url=f'https://telegram-bot-ef1y.onrender.com/{TELEGRAM_API_TOKEN}'  # Render URL
     )
 
 if __name__ == '__main__':
