@@ -66,10 +66,22 @@ def main():
         listen="0.0.0.0",  # Butun tizim bo'ylab tinglash
         port=PORT,  # Portni o'zgaruvchidan olish
         url_path=TELEGRAM_API_TOKEN,  # Tokenni url_path sifatida ishlatish
-        webhook_url=f'https://telegram-bot-ef1y.onrender.com/{TELEGRAM_API_TOKEN}'  # Render URL
+        webhook_url=f'https://your-app-name.onrender.com/{TELEGRAM_API_TOKEN}'  # Render URL
     )
 
 if __name__ == '__main__':
-    # Flask serverini ishga tushurish
-    app.run(host="0.0.0.0", port=int(os.getenv('PORT', 5000)))
-    main()
+    # Flask serverini ishga tushurish va Telegram botni birga ishlatish
+    from threading import Thread
+
+    # Flask serverni alohida threadda ishga tushirish
+    def run_flask():
+        app.run(host="0.0.0.0", port=int(os.getenv('PORT', 5000)))
+
+    # Telegram botni boshlash
+    def run_bot():
+        main()
+
+    # Flaskni va botni alohida threadlarda ishga tushirish
+    flask_thread = Thread(target=run_flask)
+    flask_thread.start()
+    run_bot()  # Botni asosiy dastur sifatida ishga tushurish
