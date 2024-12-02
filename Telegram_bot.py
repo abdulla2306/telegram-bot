@@ -54,7 +54,7 @@ def set_webhook():
     print(f"Webhook sozlash javobi: {response.text}")  # So'rovning natijasi
 
 # Webhook URLni sozlash
-@app.route(f'/{TELEGRAM_API_TOKEN}', methods=['POST'])
+@app.route(f'/{8102841815:AAEWQ-fDSvn4O1ilGhIfqxzd8QSztzjCQyc}', methods=['POST'])
 def webhook():
     json_str = request.get_data().decode('UTF-8')  # Webhookdan kelgan JSON ma'lumotlari
     update = Update.de_json(json.loads(json_str), None)  # JSONni Python obyektiga aylantirish
@@ -64,7 +64,7 @@ def webhook():
 def main():
     global application  # Global qilish
     # Applicationni yaratish
-    application = Application.builder().token(TELEGRAM_API_TOKEN).build()
+    application = Application.builder().token(8102841815:AAEWQ-fDSvn4O1ilGhIfqxzd8QSztzjCQyc).build()
 
     # Komandalar va xabarlarni qayta ishlash
     application.add_handler(CommandHandler("start", start))
