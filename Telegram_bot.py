@@ -4,6 +4,7 @@ from flask import Flask, request
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, CallbackContext
 import logging
+from threading import Thread
 
 # OpenAI API kaliti va Telegram API tokenini to'g'ridan-to'g'ri kiritish
 openai.api_key = os.getenv('OPENAI_API_KEY')
@@ -61,27 +62,15 @@ def main():
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
     # Webhookni sozlash
-    PORT = int(os.getenv('PORT', '5000'))  # Render platformasida portni 5000 deb belgilash mumkin
+    PORT = int(os.getenv('PORT', '10000'))  # Render platformasida portni 10000 deb belgilash
     application.run_webhook(
         listen="0.0.0.0",  # Butun tizim bo'ylab tinglash
         port=PORT,  # Portni o'zgaruvchidan olish
         url_path=TELEGRAM_API_TOKEN,  # Tokenni url_path sifatida ishlatish
-        webhook_url=f'https://your-app-name.onrender.com/{TELEGRAM_API_TOKEN}'  # Render URL
+        webhook_url=f'https://telegram-bot-ef1y.onrender.com/{TELEGRAM_API_TOKEN}'  # Render URL
     )
 
 if __name__ == '__main__':
-    # Flask serverini ishga tushurish va Telegram botni birga ishlatish
-    from threading import Thread
-
-    # Flask serverni alohida threadda ishga tushirish
-    def run_flask():
-        app.run(host="0.0.0.0", port=int(os.getenv('PORT', 5000)))
-
-    # Telegram botni boshlash
-    def run_bot():
-        main()
-
-    # Flaskni va botni alohida threadlarda ishga tushirish
-    flask_thread = Thread(target=run_flask)
-    flask_thread.start()
-    run_bot()  # Botni asosiy dastur sifatida ishga tushurish
+    # Flask serverini ishga tushurish
+    app.run(host="0.0.0.0", port=int(os.getenv('PORT', 10000)))  # 10000-portga bog'lanadi
+    main()
