@@ -68,7 +68,7 @@ def webhook():
 def main():
     global application  # Global qilish
     # Applicationni yaratish
-    application = Application.builder().token(8102841815:AAEWQ-fDSvn4O1ilGhIfqxzd8QSztzjCQyc).build()
+    application = Application.builder().token("8102841815:AAEWQ-fDSvn4O1ilGhIfqxzd8QSztzjCQyc").build()
 
     # Komandalar va xabarlarni qayta ishlash
     application.add_handler(CommandHandler("start", start))
