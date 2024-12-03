@@ -6,10 +6,16 @@ from flask import Flask, request
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, CallbackContext
 import logging
+from dotenv import load_dotenv  # dotenv kutubxonasini import qilamiz
 
-# OpenAI API kaliti va Telegram API tokenini to'g'ridan-to'g'ri kiritish
-openai.api_key = os.getenv('OPENAI_API_KEY')
-TELEGRAM_API_TOKEN = os.getenv('TELEGRAM_API_TOKEN')
+# .env faylini yuklash
+load_dotenv()
+
+# OpenAI API kaliti va Telegram API tokenini o'zgaruvchilardan olish
+openai.api_key = os.getenv('OPENAI_API_KEY')  # .env faylidan yoki tizimdan o'qiladi
+TELEGRAM_API_TOKEN = os.getenv('TELEGRAM_API_TOKEN')  # .env faylidan yoki tizimdan o'qiladi
+PORT = os.getenv('PORT', 10000)  # default qiymat 10000
+WEBHOOK_URL = os.getenv('WEBHOOK_URL')  # Webhook URL .env faylidan o'qiladi
 
 # Flask ilovasi
 app = Flask(__name__)
@@ -84,6 +90,10 @@ def main():
 if __name__ == '__main__':
     # Flask serverini ishga tushurish va Telegram botni sozlash
     main()
+
+    # Flask serverini ishga tushirish
+    app.run(host="0.0.0.0", port=int(PORT))  # Portni .env faylidan olish
+
 
     # Flask serverini ishga tushirish
     app.run(host="0.0.0.0", port=int(os.getenv('PORT', 10000)))
