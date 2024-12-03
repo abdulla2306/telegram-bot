@@ -35,7 +35,7 @@ def generate_openai_response(prompt: str) -> str:
         return f"Xatolik yuz berdi: {str(e)}"
 
 # Telegram botda foydalanuvchidan kelgan xabarni qayta ishlash
-async def handle_message(update: Update, context: CallbackContext) -> None:
+def handle_message(update: Update, context: CallbackContext) -> None:
     user_message = update.message.text  # Foydalanuvchidan kelgan xabar
     print(f"Foydalanuvchidan xabar: {user_message}")
     
@@ -43,21 +43,21 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
     openai_response = generate_openai_response(user_message)
     
     # OpenAI javobini foydalanuvchuga yuborish
-    await update.message.reply_text(openai_response)
+    update.message.reply_text(openai_response)
 
 # /start komandasi
-async def start(update: Update, context: CallbackContext) -> None:
-    await update.message.reply_text("Salom! Men OpenAI yordamida ishlovchi botman. Savollarni berishingiz mumkin.")
+def start(update: Update, context: CallbackContext) -> None:
+    update.message.reply_text("Salom! Men OpenAI yordamida ishlovchi botman. Savollarni berishingiz mumkin.")
 
 # Webhookni sozlash
 def set_webhook():
-    WEBHOOK_URL = f'https://telegram-bot-ef1y.onrender.com/{TELEGRAM_API_TOKEN}'
-    set_webhook_url = f'https://api.telegram.org/bot{TELEGRAM_API_TOKEN}/setWebhook?url={WEBHOOK_URL}'
+    WEBHOOK_URL = f'https://{os.getenv("t.me/DevPeakBot")}/{8102841815:AAEWQ-fDSvn4O1ilGhIfqxzd8QSztzjCQyc}'
+    set_webhook_url = f'https://api.telegram.org/bot{8102841815:AAEWQ-fDSvn4O1ilGhIfqxzd8QSztzjCQyc}/setWebhook?url={WEBHOOK_URL}'
     response = requests.get(set_webhook_url)
     print(f"Webhook sozlash javobi: {response.text}")  # So'rovning natijasi
 
 # Webhook URLni sozlash
-@app.route(f'/{TELEGRAM_API_TOKEN}', methods=['POST'])
+@app.route(f'/{8102841815:AAEWQ-fDSvn4O1ilGhIfqxzd8QSztzjCQyc}', methods=['POST'])
 def webhook():
     json_str = request.get_data().decode('UTF-8')  # Webhookdan kelgan JSON ma'lumotlari
     update = Update.de_json(json.loads(json_str), None)  # JSONni Python obyektiga aylantirish
@@ -68,7 +68,7 @@ def webhook():
 def main():
     global application  # Global qilish
     # Applicationni yaratish
-    application = Application.builder().token("8102841815:AAEWQ-fDSvn4O1ilGhIfqxzd8QSztzjCQyc").build()
+    application = Application.builder().token(8102841815:AAEWQ-fDSvn4O1ilGhIfqxzd8QSztzjCQyc).build()
 
     # Komandalar va xabarlarni qayta ishlash
     application.add_handler(CommandHandler("start", start))
@@ -83,7 +83,6 @@ if __name__ == '__main__':
 
     # Flask serverini ishga tushirish
     app.run(host="0.0.0.0", port=int(os.getenv('PORT', 10000)))
-
 
   
 
