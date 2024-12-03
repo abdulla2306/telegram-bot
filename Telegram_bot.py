@@ -51,8 +51,12 @@ def start(update: Update, context: CallbackContext) -> None:
 
 # Webhookni sozlash
 def set_webhook():
-    WEBHOOK_URL = f'https://{os.getenv("WEBHOOK_DOMAIN")}/{TELEGRAM_API_TOKEN}'
-    set_webhook_url = f'https://api.telegram.org/bot{TELEGRAM_API_TOKEN}/setWebhook?url={WEBHOOK_URL}'
+    # Telegram bot tokeni va webhook URL'si
+    TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_API_TOKEN')
+    WEBHOOK_URL = f'https://{os.getenv("WEBHOOK_URL")}/{TELEGRAM_BOT_TOKEN}'
+    
+    # Webhookni sozlash URL'si
+    set_webhook_url = f'https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/setWebhook?url={WEBHOOK_URL}'
     response = requests.get(set_webhook_url)
     print(f"Webhook sozlash javobi: {response.text}")  # So'rovning natijasi
 
